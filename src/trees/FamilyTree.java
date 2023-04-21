@@ -44,7 +44,7 @@ public class FamilyTree
         TreeNode getNodeWithName(String targetName)
         {
             // Does this node have the target name?
-            if (name==targetName)
+            if (this.name==targetName)
                 return this;
                     
             // No, recurse. Check all children of this node.
@@ -130,7 +130,7 @@ public class FamilyTree
 			addLine(line);
 		br.close();
 		fr.close();
-	}
+	} 
 	
 	
 	//
@@ -174,19 +174,20 @@ public class FamilyTree
 	// "Depth" of a node is the "distance" between that node and the root. The depth of the root is 0. The
 	// depth of the root's immediate children is 1, and so on.
 	//
-	TreeNode getMostRecentCommonAncestor(String name1, String name2) throws TreeException
+	TreeNode getMostRecentCommonAncestor(String name1, String name2) throws TreeException, IOException
 	{
 		// Get nodes for input names.
-		TreeNode node1 = root.???		// node whose name is name1
+		TreeNode node1 = root.getNodeWithName(name1);	
+		TreeNode node2 = root.getNodeWithName(name2);
 		if (node1 == null)
-			??? Throw a TreeException with a useful message
-		TreeNode node2 = root.???		// node whose name is name2
+			//Throw a TreeException with a useful message
+			throw new TreeException("no node with that name, name1"); 
 		if (node2 == null)
-			??? Throw TreeException with a useful message
+			throw new TreeException("no node with that name, name2");
 		
 		// Get ancestors of node1 and node2.
-		ArrayList<TreeNode> ancestorsOf1 = ???
-		ArrayList<TreeNode> ancestorsOf2 = ???
+		ArrayList<TreeNode> ancestorsOf1 = node1.collectAncestorsToList();
+		ArrayList<TreeNode> ancestorsOf2 = node2.collectAncestorsToList();
 		
 		// Check members of ancestorsOf1 in order until you find a node that is also
 		// an ancestor of 2. 
