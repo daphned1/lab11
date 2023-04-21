@@ -44,7 +44,7 @@ public class FamilyTree
         TreeNode getNodeWithName(String targetName)
         {
             // Does this node have the target name?
-            if (this.name==targetName)
+            if (this.name.equals(targetName))
                 return this;
                     
             // No, recurse. Check all children of this node.
@@ -53,7 +53,7 @@ public class FamilyTree
                 // If child.getNodeWithName(targetName) returns a non-null node,
                 // then that's the node we're looking for. Return it.
             	if (child.getNodeWithName(targetName) != null) {
-            		return child;
+            		return child.getNodeWithName(targetName);
             	}
             }
             
@@ -74,11 +74,10 @@ public class FamilyTree
             // recent to ancient. Expect a question about this on the final exam.
             
             int i=0;
-            TreeNode current = children.get(i);
-            while (current.parent != null) {
-            	ancestors.add(current.parent);
-            	i ++;
-            	current = children.get(i);
+            TreeNode current = parent;
+            while (current != null) {
+            	ancestors.add(current);
+            	current = current.parent;
             }
             
             return ancestors;
@@ -140,11 +139,11 @@ public class FamilyTree
 	private void addLine(String line) throws TreeException, IOException
 	{
 		// Extract parent and array of children.
-		int colonIndex = line.indexOf(";");
+		int colonIndex = line.indexOf(":");
 		if (colonIndex < 0)
 			throw new TreeException("Nothing here");
 		String parent = line.substring(0, colonIndex);
-		String childrenString = line.substring(colonIndex, line.length()-1);
+		String childrenString = line.substring(colonIndex + 1);
 				//?? The substring of line that starts just after colonIndex and goes through the end of
 				                   //the line. You'll use a different version of substring().
 		String[] childrenArray = childrenString.split(",");
@@ -173,6 +172,7 @@ public class FamilyTree
 		
 		for (int i = 0; i < childrenArray.length; i++) {
 			TreeNode childNode = new TreeNode (childrenArray[i]);
+			parentNode.addChild(childNode);
 			childNode.parent = parentNode;
 		}
 	}
